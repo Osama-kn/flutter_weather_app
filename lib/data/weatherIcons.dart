@@ -1,4 +1,5 @@
 const Map<String, String> weatherIcons = {
+  'loading' : 'loading.gif',
   'default': 'sun.gif',
   'clouds': 'clouds.gif',
   'mist': 'clouds.gif',
