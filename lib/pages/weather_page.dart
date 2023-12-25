@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_weather/data/weatherIcons.dart';
 import 'package:flutter_application_weather/models/weather_model.dart';
 import 'package:flutter_application_weather/services/weather_service.dart';
-import 'package:flutter_gif/flutter_gif.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
