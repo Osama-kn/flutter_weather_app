@@ -62,4 +62,14 @@ class WeatherService {
 
     return city ?? '';
   }
+
+  Future<List<String>> getCitySuggestions(String query) async {
+    return [
+      "Paris",
+      "New York",
+      "Los Angeles",
+      "Chicago",
+      "Houston",
+    ];
+  }
 }

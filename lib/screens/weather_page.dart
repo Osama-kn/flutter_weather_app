@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_weather/data/weatherIcons.dart';
+import 'package:flutter_application_weather/data/weather_icons.dart';
 import 'package:flutter_application_weather/models/weather_model.dart';
 import 'package:flutter_application_weather/services/weather_service.dart';
+import 'package:flutter_application_weather/widgets/autocomplete_search.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -13,9 +14,10 @@ class WeatherPage extends StatefulWidget {
 class _WeatherPageState extends State<WeatherPage> {
   final _weatherService = WeatherService();
   Weather? _weather;
+  final GlobalKey<AutocompleteSearchState> _autocompleteSearchKey = GlobalKey();
 
-  _fetchWeather() async {
-    String city = await _weatherService.getCurrentCity();
+  _fetchWeather([String? selectedCity]) async {
+    String city = selectedCity ?? await _weatherService.getCurrentCity();
     try {
       final weather = await _weatherService.getWeather(city);
       setState(() {
@@ -26,16 +28,45 @@ class _WeatherPageState extends State<WeatherPage> {
     }
   }
 
+  _resetState() {
+    print('reset weather app');
+    setState(() {
+      _weather = null;
+    });
+    _autocompleteSearchKey.currentState?.resetState();
+
+    _fetchWeather();
+  }
+
   @override
   void initState() {
     super.initState();
-
     _fetchWeather();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        // title: const Text('Weather App'),
+        flexibleSpace: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: AutocompleteSearch(
+            key: _autocompleteSearchKey,
+            onCitySelected: (selectedCity) {
+              _fetchWeather(selectedCity);
+            },
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              _resetState(); // Reset the state when the home button is pressed
+            },
+          ),
+        ],
+      ),
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
